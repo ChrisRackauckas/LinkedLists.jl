@@ -73,7 +73,7 @@ the items in the list.
 
 Usage:
 ```julia
-a = List{Int}()    # Create a list of the given type.
+a = SList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 eltype(l)          # Returns the item type, here Int64.
@@ -125,3 +125,14 @@ for index in indexed(l)
 end
 
 ```
+
+## Implementation Notes
+
+The code comments each time a method for these classes
+differs from interfaces described for collections in
+the manual. All differences stem from an assumption
+that the index to a collection will be an integer.
+
+If you have comments, or especially if I have the wrong idea
+about how to write good code in Julia, please send me an email.
+
