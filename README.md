@@ -12,21 +12,17 @@ again, not as a collection.
 
 `List` is a doubly linked list. Deletions happen in constant time.
 
-*List{T}()*
+**List{T}()**
+:    Creates a list containing items of type T.
 
-Creates a list containing items of type T.
+**show{T}(io::IO, l::List{T})**
+:    Write a representation of every list element to the given IO stream.
 
-*show{T}(io::IO, l::List{T})*
+**start{T}(l::List{T})**
+:    Return the initial state of an iterator over items in the list.
 
-Write a representation of every list element to the given IO stream.
-
-*start{T}(l::List{T})*
-
-Return the initial state of an iterator over items in the list.
-
-*done{T}(l::List{T}, n::ListNode{T})*
-
-Returns whether iteration over items is complete.
+**done{T}(l::List{T}, n::ListNode{T})**
+:    Returns whether iteration over items is complete.
 
 ## SList
 
@@ -34,9 +30,8 @@ Returns whether iteration over items is complete.
 Appending to the end of this list takes an order of the number of
 the items in the list.
 
-*SList{T}()*
-
-Creates a singly linked list of items of type T.
+**SList{T}()**
+:   Creates a singly linked list of items of type T.
 
 
 [![Build Status](https://travis-ci.org/adolgert/Lists.jl.svg?branch=master)](https://travis-ci.org/adolgert/Lists.jl)

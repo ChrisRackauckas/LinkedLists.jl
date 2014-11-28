@@ -48,7 +48,7 @@ end
 # Use getindex, setindex! to find the item at this index.
 indexed{T}(l::List{T})=ListIndexIterator{T}(l)
 start{T}(liter::ListIndexIterator{T})=liter.l.node.next
-done{T}(liter::ListIndexIterator{T}, n::ListNode{T})=(n==liter.node)
+done{T}(liter::ListIndexIterator{T}, n::ListNode{T})=(n==liter.l.node)
 next{T}(liter::ListIndexIterator{T}, n::ListNode{T})=(n, n.next)
 
 
@@ -135,7 +135,7 @@ end
 function pop!{T}(l::List{T})
     d=l.node.prev.data
     l.node.prev.prev.next=l.node
-    l.node=l.node.prev.prev
+    l.node.prev=l.node.prev.prev
     d
 end
 
@@ -176,12 +176,12 @@ end
 function splice!{T}(l::List{T}, n::ListNode{T})
     n.prev.next=n.next
     n.next.prev=n.prev
-    n.d
+    n.data
 end
 
 # Replacement of a node.
 function splice!{T}(l::List{T}, n::ListNode{T}, d::T)
-    (d, n.d)=(n.d, d)
+    (d, n.data)=(n.data, d)
     d
 end
 
@@ -192,8 +192,29 @@ function append!{T}(l::List{T}, items)
 end
 
 function prepend!{T}(l::List{T}, items)
+    node=l.node # Invariant: Add after the node "node."
     for i in items
-        unshift!(l, i)
+        toadd=ListNode{T}(node, node.next, i)
+        node.next.prev=toadd
+        node.next=toadd
+        node=toadd
     end
     l
+end
+
+
+# Adding find, to find the iterator to a given value.
+function find{T}(l::List{T}, d::T)
+    find(l, l.node, d)
+end
+
+function find{T}(l::List{T}, n::ListNode{T}, d::T)
+    n=n.next
+    while n!=l.node && n.data!=d
+        n=n.next
+    end
+    if n==l.node
+        return(nothing)
+    end
+    n
 end

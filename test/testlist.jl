@@ -1,5 +1,13 @@
 using Lists
 
+function consistent{T}(l::List{T})
+    node=l.node
+    while node.next!=l.node
+        @assert(node.next.prev==node)
+        @assert(node.prev.next==node)
+        node=node.next
+    end
+end
 
 function walkthrough_list()
     l=List{Int}()
@@ -8,6 +16,8 @@ function walkthrough_list()
     vals=[3,2,7,7,9]
 
     prepend!(l, vals)
+    consistent(l)
+
     println(l)
     println(vals)
     compare(vals, l)
@@ -19,6 +29,7 @@ function walkthrough_list()
     unshift!(vals, 8)
     unshift!(l, 8)
     compare(vals, l)
+    consistent(l)
 
     @assert(length(l)==6)
 
@@ -35,19 +46,26 @@ function walkthrough_list()
     @assert(first(l)==8)
     @assert(last(l)==9)
     show(l)
+    println()
     push!(l, 11)
-    println(l)
-    println(vals)
+    consistent(l)
     @assert(pop!(l)==11)
+    compare(vals, l)
+    consistent(l)
     @assert(shift!(l)==8)
     shift!(vals)
+    compare(vals, l)
+    consistent(l)
 
     two=find(l, 2)
     insert!(l, two, 6)
-    insert!(vals, 3, 6)
+    insert!(vals, 2, 6)
+    consistent(l)
+    println(l)
+    println(vals)
     compare(vals, l)
     deleteat!(l, two)
-    deleteat!(vals, 2)
+    deleteat!(vals, 3)
     compare(vals, l)
     splice!(l, find(l, 9))
     deleteat!(vals, 5)
