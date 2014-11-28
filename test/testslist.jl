@@ -44,6 +44,7 @@ function walkthrough()
 
     @assert(!in(13, l))
     @assert(in(2, l))
+    @assert(2 in l)
     @assert(eltype(l)==Int64)
     @assert(first(l)==8)
     @assert(last(l)==9)
