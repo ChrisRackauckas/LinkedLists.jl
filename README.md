@@ -8,7 +8,8 @@ This package provides a singly linked list and a doubly linked list
 implementation, as Julia collections. Singly linked lists are
 supported with `cons`, `car`, and `cdr`, but not as a standard
 collection. Doubly linked lists are included in the samples but,
-again, not as a collection.
+again, not as a collection. This doesn't do anything fancy
+like create an array of nodes. Maybe it should.
 
 ## List
 
