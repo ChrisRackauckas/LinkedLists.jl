@@ -10,6 +10,7 @@ type ListNode{T} <: AbstractNode{T}
     ListNode()=(x=new(); x.prev=x; x.next=x; x)
     ListNode(p, n, d)=new(p, n, d)
 end
+ListNode{T}(p, n, d::T)=ListNode{T}(p, n, d)
 
 # Doubly linked list.
 type List{T} <: AbstractList{T}
@@ -25,7 +26,7 @@ type SListNode{T} <: AbstractNode{T}
     SListNode()=(x=new(); x.next=x; x)
     SListNode(n::SListNode{T}, d::T)=new(n, d)
 end
-
+SListNode{T}(n::SListNode{T}, d::T)=SListNode{T}(n, d)
 
 # Singly-linked list
 type SList{T} <: AbstractList{T}
@@ -52,8 +53,9 @@ end
 # The section titles work through sections of the manual.
 #### Iteration
 
-start{T}(l::AbstractList{T})=l.node.next
-done{T}(l::AbstractList{T}, n::AbstractNode{T})=(n==l.node) next{T}(l::AbstractList{T}, n::AbstractNode{T})=(n.data, n.next)
+start(l::AbstractList)=l.node.next
+done(l::AbstractList, n::AbstractNode)=(n==l.node)
+next(l::AbstractList, n::AbstractNode)=(n.data, n.next)
 
 immutable ListIndexIterator{L}
     l::L
@@ -68,13 +70,13 @@ next(liter::ListIndexIterator, n::AbstractNode)=(n, n.next)
 
 
 #### General Collections
-isempty{T}(l::AbstractList{T})=(l.node.next==l.node)
+isempty(l::AbstractList)=(l.node.next==l.node)
 
-function empty!{T}(l::AbstractList{T})
+function empty!(l::AbstractList)
     l.node.next=l.node
 end
 
-function length{T}(l::AbstractList{T})
+function length(l::AbstractList)
     cnt=0
     for n in l
         cnt+=1
@@ -84,14 +86,14 @@ end
 
 # This is supposed to be an integer index, but
 # we return the node as an index.
-function endof{T}(l::AbstractList{T})
+function endof(l::AbstractList)
     node=l.node.next
     while node.next!=l.node
         node=node.next
     end
     node
 end
-function endof{T}(l::List{T})
+function endof(l::List)
     l.node.prev
 end
 
@@ -99,7 +101,7 @@ end
 
 #### Iterable Collections
 
-function in{T}(item::T, l::AbstractList{T})
+function in(item, l::AbstractList)
     for node in l
         if isequal(node.data, item)
             return true
@@ -112,7 +114,7 @@ eltype{T}(l::AbstractList{T})=T
 
 # Highest index in list for each value in a that is
 # a member of the list.
-function indexin{T}(a, l::AbstractList{T})
+function indexin(a, l::AbstractList)
     highest=zeros(Int, length(a))
     for (lidx, d) in enumerate(l)
         for (xidx, x) in enumerate(a)
@@ -125,10 +127,17 @@ function indexin{T}(a, l::AbstractList{T})
     highest
 end
 
-first{T}(l::AbstractList{T})=l.node.next.data
+first(l::AbstractList)=l.node.next.data
 
-function last{T}(l::AbstractList{T})
-    l.node.prev.data::T
+function last(l::AbstractList)
+    lastd=l.node.data
+    for d in l
+        lastd=d
+    end
+    lastd
+end
+function last(l::List)
+    l.node.prev.data
 end
 
 
@@ -136,8 +145,8 @@ end
 
 # Treat the node as an index. It is also what
 # is used for the state in iterators.
-getindex{T}(l::List{T}, n::AbstractNode{T})=n.data
-function setindex!{T}(l::List{T}, n::AbstractNode{T}, d::T)
+getindex(l::AbstractList, n::AbstractNode)=n.data
+function setindex!(l::List, n::AbstractNode, d)
     n.data=d
 end
 
@@ -147,28 +156,28 @@ end
 # Breaking interface expectation to push multiple items
 # so that we can return an index of the pushed item.
 # Use append! for multiple items.
-function push!{T}(l::AbstractList{T}, item::T)
+function push!(l::AbstractList, item)
     lnode=endof(l)
-    lnode.next=SListNode{T}(lnode.next, item)
+    lnode.next=SListNode(lnode.next, item)
     lnode.next
 end
-function push!{T}(l::List{T}, item::T)
-    toadd=ListNode{T}(l.node.prev, l.node, item)
+function push!(l::List, item)
+    toadd=ListNode(l.node.prev, l.node, item)
     l.node.prev.next=toadd
     l.node.prev=toadd
     toadd
 end
 
-function pop!{T}(l::AbstractList{T})
-    node=l.node::SListNode{T}
+function pop!(l::AbstractList)
+    node=l.node
     while node.next.next!=l.node
-        node=node.next::SListNode{T}
+        node=node.next
     end
     d=node.next.data
     node.next=node.next.next
     d
 end
-function pop!{T}(l::List{T})
+function pop!(l::List)
     d=l.node.prev.data
     l.node.prev.prev.next=l.node
     l.node.prev=l.node.prev.prev
@@ -178,30 +187,35 @@ end
 # Breaking interface expectation because:
 # Returns an index to the item instead of the collection.
 # Takes only one value at a time. Use prepend! for multiple.
-function unshift!{T}(l::AbstractList{T}, d)
-    l.node.next=SListNode{T}(l.node.next, d)
+function unshift!(l::AbstractList, d)
+    l.node.next=SListNode(l.node.next, d)
     l.node.next
 end
-function unshift!{T}(l::List{T}, d)
-    toadd=ListNode{T}(l.node, l.node.next, d)
+function unshift!(l::List, d)
+    toadd=ListNode(l.node, l.node.next, d)
     l.node.next.prev=toadd
     l.node.next=toadd
     toadd
 end
 
-function shift!{T}(l::AbstractList{T})
+function shift!(l::AbstractList)
     x=l.node.next.data
     l.node.next.next.prev=l.node
     l.node.next=l.node.next.next
     x
 end
+function shift!(l::SList)
+    d=l.node.next.data
+    l.node.next=l.node.next.next
+    d
+end
 
 # Insert-after.
-function insert!{T}(l::AbstractList{T}, n::AbstractNode{T}, d::T)
+function insert!(l::AbstractList, n::AbstractNode, d)
     n.next=typeof(n)(n.next, d)
 end
-function insert!{T}(l::List{T}, n::ListNode{T}, d::T)
-    toadd=ListNode{T}(n.prev, n, d)
+function insert!(l::List, n::ListNode, d)
+    toadd=ListNode(n.prev, n, d)
     n.prev.next=toadd
     n.prev=toadd
     toadd
@@ -209,7 +223,7 @@ end
 
 # Linear in the number of elements.
 # Second argument is the state from an iterator.
-function deleteat!{T}(l::AbstractList{T}, n::AbstractNode{T})
+function deleteat!(l::AbstractList, n::AbstractNode)
     prev=l.node
     while prev.next!=n
         prev=prev.next
@@ -217,14 +231,14 @@ function deleteat!{T}(l::AbstractList{T}, n::AbstractNode{T})
     prev.next=n.next
     l
 end
-function deleteat!{T}(l::List{T}, n::ListNode{T})
+function deleteat!(l::List, n::ListNode)
     n.prev.next=n.next
     n.next.prev=n.prev
     l
 end
 
 # Removal of a node, returning the value at that node.
-function splice!{T}(l::AbstractList{T}, n::AbstractNode{T})
+function splice!(l::AbstractList, n::AbstractNode)
     prev=l.node
     while prev.next!=n
         prev=prev.next
@@ -233,41 +247,41 @@ function splice!{T}(l::AbstractList{T}, n::AbstractNode{T})
     n.data
 end
 
-function splice!{T}(l::List{T}, n::ListNode{T})
+function splice!(l::List, n::ListNode)
     n.prev.next=n.next
     n.next.prev=n.prev
     n.data
 end
 
 # Replacement of a node.
-function splice!{T}(l::AbstractList{T}, n::AbstractNode{T}, d::T)
+function splice!(l::AbstractList, n::AbstractNode, d)
     (d, n.data)=(n.data, d)
     d
 end
 
-function append!{T}(l::AbstractList{T}, items)
+function append!(l::AbstractList, items)
     lnode=endof(l)
     for i in items
-        lnode.next=SListNode{T}(lnode.next, i)
+        lnode.next=SListNode(lnode.next, i)
         lnode=lnode.next
     end
 end
-function append!{T}(l::List{T}, items)
+function append!(l::List, items)
     for i in items
         push!(l, i)
     end
 end
 
-function prepend!{T}(l::AbstractList{T}, items)
+function prepend!(l::AbstractList, items)
     for i in reverse(items)
         unshift!(l, i)
     end
     l
 end
-function prepend!{T}(l::List{T}, items)
+function prepend!(l::List, items)
     node=l.node # Invariant: Add after the node "node."
     for i in items
-        toadd=ListNode{T}(node, node.next, i)
+        toadd=ListNode(node, node.next, i)
         node.next.prev=toadd
         node.next=toadd
         node=toadd
@@ -277,10 +291,10 @@ end
 
 
 # Adding find, to find the iterator to a given value.
-function find{T}(l::AbstractList{T}, d::T)
+function find(l::AbstractList, d)
     find(l, l.node, d)
 end
-function find{T}(l::AbstractList{T}, n::AbstractNode{T}, d::T)
+function find(l::AbstractList, n::AbstractNode, d)
     n=n.next
     while n!=l.node && n.data!=d
         n=n.next
