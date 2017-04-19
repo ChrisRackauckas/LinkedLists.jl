@@ -1,5 +1,5 @@
 using Lists
 using Base.Test
 
-include("testslist.jl")
-include("testlist.jl")
+@time @testset "Singly-Linked Lists" begin include("testslist.jl") end
+@time @testset "Doubly-Linked Lists" begin include("testlist.jl") end

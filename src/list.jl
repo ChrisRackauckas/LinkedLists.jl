@@ -1,8 +1,3 @@
-# Doubly linked list
-# Imports from Base have been done already.
-
-export List, ListNode
-
 type ListNode{T} <: AbstractNode{T}
     prev::ListNode{T}
     next::ListNode{T}
@@ -17,8 +12,6 @@ type List{T} <: AbstractList{T}
     node::ListNode{T}
     List()=new(ListNode{T}())
 end
-
-# Singly linked list
 
 type SListNode{T} <: AbstractNode{T}
     next::SListNode{T}

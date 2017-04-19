@@ -1,3 +1,5 @@
+__precompile__()
+
 module Lists
 
 import Base: isempty, empty!, length, last, start, next, done
@@ -10,6 +12,8 @@ abstract AbstractList{T}
 abstract AbstractNode{T}
 
 include("list.jl")
+
+export List, ListNode
 
 export AbstractList, AbstractNode
 
