@@ -53,19 +53,18 @@ end
 #### Iteration
 
 start{T}(l::AbstractList{T})=l.node.next
-done{T}(l::AbstractList{T}, n::AbstractNode{T})=(n==l.node)
-next{T}(l::AbstractList{T}, n::AbstractNode{T})=(n.data, n.next)
+done{T}(l::AbstractList{T}, n::AbstractNode{T})=(n==l.node) next{T}(l::AbstractList{T}, n::AbstractNode{T})=(n.data, n.next)
 
-immutable type ListIndexIterator{L<:AbstractList}
+immutable ListIndexIterator{L}
     l::L
 end
 
 # Returns an iterator over indices.
 # Use getindex, setindex! to find the item at this index.
-eachindex{T}(l::List{T})=ListIndexIterator{T}(l)
-start{T}(liter::ListIndexIterator{T})=liter.l.node.next
-done{T}(liter::ListIndexIterator{T}, n::AbstractNode{T})=(n==liter.l.node)
-next{T}(liter::ListIndexIterator{T}, n::AbstractNode{T})=(n, n.next)
+eachindex(l::AbstractList)=ListIndexIterator(l)
+start(liter::ListIndexIterator)=liter.l.node.next
+done(liter::ListIndexIterator, n::AbstractNode)=(n==liter.l.node)
+next(liter::ListIndexIterator, n::AbstractNode)=(n, n.next)
 
 
 #### General Collections
