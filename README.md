@@ -59,7 +59,7 @@ for item::Int in l
     println(item)
 end
 
-for index in indexed(l)
+for index in eachindex(l)
     item=getindex(l, index)
     println(item)
 end
@@ -120,7 +120,7 @@ for item::Int in l
     println(item)
 end
 
-for index in indexed(l)
+for index in eachindex(l)
     item=getindex(l, index)
     println(item)
 end

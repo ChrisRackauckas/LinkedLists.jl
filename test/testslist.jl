@@ -9,7 +9,7 @@ end
 
 function compare_iterator(array, list)
     # Iterate over indices of container, which are nodes.
-    for (ridx, iter) in enumerate(indexed(list))
+    for (ridx, iter) in enumerate(eachindex(list))
         @assert(getindex(list, iter)==array[ridx])
     end
 end
