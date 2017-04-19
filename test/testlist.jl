@@ -1,6 +1,6 @@
 using Lists
 
-function consistent{T}(l::List{T})
+function consistent(l::List)
     node=l.node
     while node.next!=l.node
         @assert(node.next.prev==node)
