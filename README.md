@@ -1,4 +1,4 @@
-# Lists
+# Lists.jl
 
 [![Build Status](https://travis-ci.org/ChrisRackauckas/Lists.jl.svg?branch=master)](https://travis-ci.org/ChrisRackauckas/Lists.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/y21avwoiq01g9ps6?svg=true)](https://ci.appveyor.com/project/ChrisRackauckas/lists-jl)
