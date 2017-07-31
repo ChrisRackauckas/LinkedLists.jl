@@ -42,7 +42,7 @@ function walkthrough_list()
 
     @assert(!in(13, l))
     @assert(in(2, l))
-    @assert(eltype(l)==Int64)
+    @assert(eltype(l)==Int)
     @assert(first(l)==8)
     @assert(last(l)==9)
     show(l)
