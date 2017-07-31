@@ -137,3 +137,6 @@ that the index to a collection will be an integer.
 If you have comments, or especially if I have the wrong idea
 about how to write good code in Julia, please send me an email.
 
+## Credit
+
+Lots of credit goes to @adolgert as this library was adapted from his code.
