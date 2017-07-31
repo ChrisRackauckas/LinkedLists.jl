@@ -1,6 +1,8 @@
 # Lists
 
-[![Build Status](https://travis-ci.org/adolgert/Lists.jl.svg?branch=master)](https://travis-ci.org/adolgert/Lists.jl)
+[![Build Status](https://travis-ci.org/ChrisRackauckas/Lists.jl.svg?branch=master)](https://travis-ci.org/ChrisRackauckas/Lists.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/y21avwoiq01g9ps6?svg=true)](https://ci.appveyor.com/project/ChrisRackauckas/lists-jl)
+[![Coverage Status](https://coveralls.io/repos/github/ChrisRackauckas/Lists.jl/badge.svg?branch=master)](https://coveralls.io/github/ChrisRackauckas/Lists.jl?branch=master)
 
 **List collections for Julia**
 
