@@ -26,7 +26,7 @@ isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 length(l)          # The number of entries. An O(n) operation.
 2 in l             # Test whether the given item is an entry in the list. O(n).
-eltype(l)          # Returns the item type, here Int64.
+eltype(l)          # Returns the item type, here Int.
 indexin(a, l)      # Highest index in list for each value of a that is member.
 first(l)           # First item in the list.
 last(l)            # Last item in the list, the item value.
@@ -79,7 +79,7 @@ Usage:
 a = SList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
-eltype(l)          # Returns the item type, here Int64.
+eltype(l)          # Returns the item type, here Int.
 first(l)           # First item in the list.
 unshift!(l, d)     # Add item to start of list. Return index of item.
 shift!(l)          # Remove first item and return value.
