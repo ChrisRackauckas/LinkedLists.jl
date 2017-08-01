@@ -8,8 +8,8 @@ import Base: show, println, indexin, endof, push!, pop!, insert!, splice!, eachi
 import Base: find, append!, prepend!
 import Base: getindex, setindex!
 
-abstract AbstractList{T}
-abstract AbstractNode{T}
+abstract type AbstractList{T} end
+abstract type AbstractNode{T} end
 
 include("list.jl")
 

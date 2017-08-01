@@ -1,31 +1,31 @@
-type ListNode{T} <: AbstractNode{T}
+mutable struct ListNode{T} <: AbstractNode{T}
     prev::ListNode{T}
     next::ListNode{T}
     data::T
-    ListNode()=(x=new(); x.prev=x; x.next=x; x)
-    ListNode(p, n, d)=new(p, n, d)
+    ListNode{T}() where T =(x=new(); x.prev=x; x.next=x; x)
+    ListNode{T}(p, n, d) where T =new(p, n, d)
 end
-ListNode{T}(p, n, d::T)=ListNode{T}(p, n, d)
+ListNode(p, n, d::T) where T =ListNode{T}(p, n, d)
 
 # Doubly linked list.
-type LinkedList{T} <: AbstractList{T}
+mutable struct LinkedList{T} <: AbstractList{T}
     node::ListNode{T}
-    LinkedList()=new(ListNode{T}())
+    LinkedList{T}() where T =new(ListNode{T}())
 end
 
-type SListNode{T} <: AbstractNode{T}
+mutable struct SListNode{T} <: AbstractNode{T}
     next::SListNode{T}
     data::T
-    SListNode()=(x=new(); x.next=x; x)
-    SListNode(n::SListNode{T}, d::T)=new(n, d)
+    SListNode{T}() where T =(x=new(); x.next=x; x)
+    SListNode{T}(n::SListNode{T}, d::T) where T =new(n, d)
 end
-SListNode{T}(n::SListNode{T}, d::T)=SListNode{T}(n, d)
+SListNode(n::SListNode{T}, d::T) where T =SListNode{T}(n, d)
 
 # Singly-linked list
-type SLinkedList{T} <: AbstractList{T}
+mutable struct SLinkedList{T} <: AbstractList{T}
     # node is always the last element. Points to the first element.
     node::SListNode{T}
-    SLinkedList()=new(SListNode{T}())
+    SLinkedList{T}() where T =new(SListNode{T}())
 end
 
 
