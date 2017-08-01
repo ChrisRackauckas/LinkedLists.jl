@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/y21avwoiq01g9ps6?svg=true)](https://ci.appveyor.com/project/ChrisRackauckas/lists-jl)
 [![Coverage Status](https://coveralls.io/repos/github/ChrisRackauckas/Lists.jl/badge.svg?branch=master)](https://coveralls.io/github/ChrisRackauckas/Lists.jl?branch=master)
 
-**List collections for Julia**
+**LinkedList collections for Julia**
 
 This package provides a singly linked list and a doubly linked list
 implementation, as Julia collections. Singly linked lists are
@@ -13,15 +13,15 @@ collection. Doubly linked lists are included in the samples but,
 again, not as a collection. This doesn't do anything fancy
 like create an array of nodes. Maybe it should.
 
-## List
+## LinkedList
 
-`List` is a doubly linked list. Deletions happen in constant time.
+`LinkedList` is a doubly linked list. Deletions happen in constant time.
 If code contains an index to an item in the list, then
 removing other items in the list won't invalidate that index.
 
 Usage:
 ```julia
-a = List{Int}()    # Create a list of the given type.
+a = LinkedList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 length(l)          # The number of entries. An O(n) operation.
@@ -52,10 +52,10 @@ find(l, d)             # Find first occurrence of item in list. Return its index
 find(l, index, d)      # Find first occurrence of d after the given index.
 ```
 
-There are two kinds of iterators for `List`. One access items.
+There are two kinds of iterators for `LinkedList`. One access items.
 The other loops over indices.
 ```julia
-l = List{Int}()
+l = LinkedList{Int}()
 prepend!(l, [2, 4, 6])
 for item::Int in l
     println(item)
@@ -68,15 +68,15 @@ end
 
 ```
 
-## SList
+## SLinkedList
 
-`SList` is a singly linked list over items of a given type.
+`SLinkedList` is a singly linked list over items of a given type.
 Appending to the end of this list takes an order of the number of
 the items in the list.
 
 Usage:
 ```julia
-a = SList{Int}()    # Create a list of the given type.
+a = SLinkedList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 eltype(l)          # Returns the item type, here Int.
@@ -113,10 +113,10 @@ find(l, d)             # Find first occurrence of item in list. Return its index
 find(l, index, d)      # Find first occurrence of d after the given index.
 ```
 
-As with `List`, there are two kinds of iterators for `SList`. One access items.
+As with `LinkedList`, there are two kinds of iterators for `SLinkedList`. One access items.
 The other loops over indices.
 ```julia
-l = SList{Int}()
+l = SLinkedList{Int}()
 prepend!(l, [2, 4, 6])
 for item::Int in l
     println(item)

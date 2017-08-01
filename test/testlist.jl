@@ -1,6 +1,6 @@
-using Lists
+using LinkedLists
 
-function consistent(l::List)
+function consistent(l::LinkedList)
     node=l.node
     while node.next!=l.node
         @assert(node.next.prev==node)
@@ -10,7 +10,7 @@ function consistent(l::List)
 end
 
 function walkthrough_list()
-    l=List{Int}()
+    l=LinkedList{Int}()
     @assert(isempty(l))
     @assert(length(l)==0)
     vals=[3,2,7,7,9]

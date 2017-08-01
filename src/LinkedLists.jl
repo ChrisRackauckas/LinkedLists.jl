@@ -13,10 +13,10 @@ abstract AbstractNode{T}
 
 include("list.jl")
 
-export List, ListNode
+export LinkedList, ListNode
 
 export AbstractList, AbstractNode
 
-export SList, SListNode, eachindex
+export SLinkedList, SListNode, eachindex
 
 end # module

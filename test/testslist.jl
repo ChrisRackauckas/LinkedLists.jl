@@ -1,4 +1,4 @@
-using Lists
+using LinkedLists
 
 function compare(array, list)
     # Iterate over items in container.
@@ -15,7 +15,7 @@ function compare_iterator(array, list)
 end
 
 function walkthrough()
-    l=SList{Int}()
+    l=SLinkedList{Int}()
     @assert(isempty(l))
     @assert(length(l)==0)
     vals=[3,2,7,7,9]

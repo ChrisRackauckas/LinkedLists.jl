@@ -1,4 +1,4 @@
-using Lists
+using LinkedLists
 using Base.Test
 
 @time @testset "Singly-Linked Lists" begin include("testslist.jl") end

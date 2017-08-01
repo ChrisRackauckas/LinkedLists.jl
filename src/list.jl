@@ -8,9 +8,9 @@ end
 ListNode{T}(p, n, d::T)=ListNode{T}(p, n, d)
 
 # Doubly linked list.
-type List{T} <: AbstractList{T}
+type LinkedList{T} <: AbstractList{T}
     node::ListNode{T}
-    List()=new(ListNode{T}())
+    LinkedList()=new(ListNode{T}())
 end
 
 type SListNode{T} <: AbstractNode{T}
@@ -22,10 +22,10 @@ end
 SListNode{T}(n::SListNode{T}, d::T)=SListNode{T}(n, d)
 
 # Singly-linked list
-type SList{T} <: AbstractList{T}
+type SLinkedList{T} <: AbstractList{T}
     # node is always the last element. Points to the first element.
     node::SListNode{T}
-    SList()=new(SListNode{T}())
+    SLinkedList()=new(SListNode{T}())
 end
 
 
@@ -86,7 +86,7 @@ function endof(l::AbstractList)
     end
     node
 end
-function endof(l::List)
+function endof(l::LinkedList)
     l.node.prev
 end
 
@@ -129,7 +129,7 @@ function last(l::AbstractList)
     end
     lastd
 end
-function last(l::List)
+function last(l::LinkedList)
     l.node.prev.data
 end
 
@@ -139,7 +139,7 @@ end
 # Treat the node as an index. It is also what
 # is used for the state in iterators.
 getindex(l::AbstractList, n::AbstractNode)=n.data
-function setindex!(l::List, n::AbstractNode, d)
+function setindex!(l::LinkedList, n::AbstractNode, d)
     n.data=d
 end
 
@@ -154,7 +154,7 @@ function push!(l::AbstractList, item)
     lnode.next=SListNode(lnode.next, item)
     lnode.next
 end
-function push!(l::List, item)
+function push!(l::LinkedList, item)
     toadd=ListNode(l.node.prev, l.node, item)
     l.node.prev.next=toadd
     l.node.prev=toadd
@@ -170,7 +170,7 @@ function pop!(l::AbstractList)
     node.next=node.next.next
     d
 end
-function pop!(l::List)
+function pop!(l::LinkedList)
     d=l.node.prev.data
     l.node.prev.prev.next=l.node
     l.node.prev=l.node.prev.prev
@@ -184,7 +184,7 @@ function unshift!(l::AbstractList, d)
     l.node.next=SListNode(l.node.next, d)
     l.node.next
 end
-function unshift!(l::List, d)
+function unshift!(l::LinkedList, d)
     toadd=ListNode(l.node, l.node.next, d)
     l.node.next.prev=toadd
     l.node.next=toadd
@@ -197,7 +197,7 @@ function shift!(l::AbstractList)
     l.node.next=l.node.next.next
     x
 end
-function shift!(l::SList)
+function shift!(l::SLinkedList)
     d=l.node.next.data
     l.node.next=l.node.next.next
     d
@@ -207,7 +207,7 @@ end
 function insert!(l::AbstractList, n::AbstractNode, d)
     n.next=typeof(n)(n.next, d)
 end
-function insert!(l::List, n::ListNode, d)
+function insert!(l::LinkedList, n::ListNode, d)
     toadd=ListNode(n.prev, n, d)
     n.prev.next=toadd
     n.prev=toadd
@@ -224,7 +224,7 @@ function deleteat!(l::AbstractList, n::AbstractNode)
     prev.next=n.next
     l
 end
-function deleteat!(l::List, n::ListNode)
+function deleteat!(l::LinkedList, n::ListNode)
     n.prev.next=n.next
     n.next.prev=n.prev
     l
@@ -240,7 +240,7 @@ function splice!(l::AbstractList, n::AbstractNode)
     n.data
 end
 
-function splice!(l::List, n::ListNode)
+function splice!(l::LinkedList, n::ListNode)
     n.prev.next=n.next
     n.next.prev=n.prev
     n.data
@@ -259,7 +259,7 @@ function append!(l::AbstractList, items)
         lnode=lnode.next
     end
 end
-function append!(l::List, items)
+function append!(l::LinkedList, items)
     for i in items
         push!(l, i)
     end
@@ -271,7 +271,7 @@ function prepend!(l::AbstractList, items)
     end
     l
 end
-function prepend!(l::List, items)
+function prepend!(l::LinkedList, items)
     node=l.node # Invariant: Add after the node "node."
     for i in items
         toadd=ListNode(node, node.next, i)
