@@ -1,6 +1,6 @@
 __precompile__()
 
-module Lists
+module LinkedLists
 
 import Base: isempty, empty!, length, last, start, next, done
 import Base: contains, eltype, unshift!, shift!, deleteat!
