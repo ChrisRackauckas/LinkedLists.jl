@@ -1,8 +1,8 @@
 # LinkedLists.jl
 
-[![Build Status](https://travis-ci.org/ChrisRackauckas/Lists.jl.svg?branch=master)](https://travis-ci.org/ChrisRackauckas/Lists.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/y21avwoiq01g9ps6?svg=true)](https://ci.appveyor.com/project/ChrisRackauckas/lists-jl)
-[![Coverage Status](https://coveralls.io/repos/github/ChrisRackauckas/Lists.jl/badge.svg?branch=master)](https://coveralls.io/github/ChrisRackauckas/Lists.jl?branch=master)
+[![Build Status](https://travis-ci.org/ChrisRackauckas/LinkedLists.jl.svg?branch=master)](https://travis-ci.org/ChrisRackauckas/LinkedLists.jl)
+[![Build status](https://ci.appveyor.com/api/projects/status/ivikwb1d8xngrvyo?svg=true)](https://ci.appveyor.com/project/ChrisRackauckas/linkedlists-jl)
+[![Coverage Status](https://coveralls.io/repos/github/ChrisRackauckas/LinkedLists.jl/badge.svg?branch=master)](https://coveralls.io/github/ChrisRackauckas/LinkedLists.jl?branch=master)
 
 **LinkedList collections for Julia**
 
