@@ -50,7 +50,7 @@ start(l::AbstractList)=l.node.next
 done(l::AbstractList, n::AbstractNode)=(n==l.node)
 next(l::AbstractList, n::AbstractNode)=(n.data, n.next)
 
-immutable ListIndexIterator{L}
+struct ListIndexIterator{L}
     l::L
 end
 
