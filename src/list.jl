@@ -29,7 +29,7 @@ mutable struct SLinkedList{T} <: AbstractList{T}
 end
 
 
-function show{T}(io::IO, l::AbstractList{T})
+function show(io::IO, l::AbstractList{T}) where T
     print(io, "$(typeof(l)){", string(T), "}(")
     middle=false
     for item in l
@@ -46,9 +46,8 @@ end
 # The section titles work through sections of the manual.
 #### Iteration
 
-start(l::AbstractList)=l.node.next
-done(l::AbstractList, n::AbstractNode)=(n==l.node)
-next(l::AbstractList, n::AbstractNode)=(n.data, n.next)
+isdone(l::AbstractList, n::AbstractNode)=(n==l.node)
+iterate(l::AbstractList, n::AbstractNode=l.node.next)= n==l.node ? nothing : (n.data, n.next)
 
 struct ListIndexIterator{L}
     l::L
@@ -56,10 +55,8 @@ end
 
 # Returns an iterator over indices.
 # Use getindex, setindex! to find the item at this index.
-eachindex(l::AbstractList)=ListIndexIterator(l)
-start(liter::ListIndexIterator)=liter.l.node.next
-done(liter::ListIndexIterator, n::AbstractNode)=(n==liter.l.node)
-next(liter::ListIndexIterator, n::AbstractNode)=(n, n.next)
+keys(l::AbstractList)=ListIndexIterator(l)
+iterate(liter::ListIndexIterator, n::AbstractNode=liter.l.node.next)= n==liter.l.node ? nothing : (n, n.next)
 
 
 #### General Collections
@@ -79,14 +76,14 @@ end
 
 # This is supposed to be an integer index, but
 # we return the node as an index.
-function endof(l::AbstractList)
+function lastindex(l::AbstractList)
     node=l.node.next
     while node.next!=l.node
         node=node.next
     end
     node
 end
-function endof(l::LinkedList)
+function lastindex(l::LinkedList)
     l.node.prev
 end
 
@@ -95,29 +92,32 @@ end
 #### Iterable Collections
 
 function in(item, l::AbstractList)
-    for node in l
-        if isequal(node.data, item)
+    miss=false
+    for e in l
+        if e == item
             return true
+        elseif e === missing
+            miss=true
         end
     end
-    false
+    miss ? missing : false
 end
 
-eltype{T}(l::AbstractList{T})=T
+eltype(l::AbstractList{T}) where T = T
 
 # Highest index in list for each value in a that is
 # a member of the list.
 function indexin(a, l::AbstractList)
-    highest=zeros(Int, length(a))
-    for (lidx, d) in enumerate(l)
+    highest::Vector{Union{Nothing,T} where T<:AbstractNode}  = fill(nothing, length(a))
+    for (node, data) in pairs(l)
         for (xidx, x) in enumerate(a)
-            if isequal(x, d)
-                highest[xidx]=lidx
+            if isequal(x, data)
+                highest[xidx]=node
                 break
             end
         end
     end
-    highest
+    return highest
 end
 
 first(l::AbstractList)=l.node.next.data
@@ -150,7 +150,7 @@ end
 # so that we can return an index of the pushed item.
 # Use append! for multiple items.
 function push!(l::AbstractList, item)
-    lnode=endof(l)
+    lnode=lastindex(l)
     lnode.next=SListNode(lnode.next, item)
     lnode.next
 end
@@ -180,24 +180,24 @@ end
 # Breaking interface expectation because:
 # Returns an index to the item instead of the collection.
 # Takes only one value at a time. Use prepend! for multiple.
-function unshift!(l::AbstractList, d)
+function pushfirst!(l::AbstractList, d)
     l.node.next=SListNode(l.node.next, d)
     l.node.next
 end
-function unshift!(l::LinkedList, d)
+function pushfirst!(l::LinkedList, d)
     toadd=ListNode(l.node, l.node.next, d)
     l.node.next.prev=toadd
     l.node.next=toadd
     toadd
 end
 
-function shift!(l::AbstractList)
+function popfirst!(l::AbstractList)
     x=l.node.next.data
     l.node.next.next.prev=l.node
     l.node.next=l.node.next.next
     x
 end
-function shift!(l::SLinkedList)
+function popfirst!(l::SLinkedList)
     d=l.node.next.data
     l.node.next=l.node.next.next
     d
@@ -253,7 +253,7 @@ function splice!(l::AbstractList, n::AbstractNode, d)
 end
 
 function append!(l::AbstractList, items)
-    lnode=endof(l)
+    lnode=lastindex(l)
     for i in items
         lnode.next=SListNode(lnode.next, i)
         lnode=lnode.next
@@ -267,7 +267,7 @@ end
 
 function prepend!(l::AbstractList, items)
     for i in reverse(items)
-        unshift!(l, i)
+        pushfirst!(l, i)
     end
     l
 end
@@ -282,18 +282,24 @@ function prepend!(l::LinkedList, items)
     l
 end
 
+# Adding findfirst, to find the index (node) of the first element of l for which predicate returns true
+function findfirst(predicate, l::AbstractList)
+    for n in ListIndexIterator
+        if predicate(n.data) return n end
+    end
+    return(nothing)
+end
 
-# Adding find, to find the iterator to a given value.
-function find(l::AbstractList, d)
-    find(l, l.node, d)
-end
-function find(l::AbstractList, n::AbstractNode, d)
-    n=n.next
-    while n!=l.node && n.data!=d
-        n=n.next
+# returns the position of a node in a list
+function indextoposition(n::AbstractNode, l::AbstractList)
+    for (i, node) in enumerate(ListIndexIterator(l))
+        if node === n return i end
     end
-    if n==l.node
-        return(nothing)
-    end
-    n
+    return nothing
 end
+indextoposition(a::Vector, l::AbstractList) = map(x -> indextoposition(x,l) , a)
+indextoposition(::Nothing, _) = nothing
+positiontoindex(i::Int, l::AbstractList) = i<= length(l) ? keys(l)[i] : error("list is shorter than $i")
+positiontoindex(v::Vector, l::AbstractList) = map(x -> positiontoindex(x, l), v)
+positiontoindex(::Nothing, _) = nothing
+
