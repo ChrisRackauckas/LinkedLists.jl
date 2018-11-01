@@ -25,7 +25,7 @@ a = LinkedList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 length(l)          # The number of entries. An O(n) operation.
-2 in l             # Test whether the given item is an entry in the list. returns Bool or missing O(n).
+2 in l             # Test whether the given item is an entry in the list. returns Bool or missing. O(n).
 eltype(l)          # Returns the item type, here Int.
 indexin(a, l)      # Highest index in list for each value of a that is member.
 first(l)           # First item in the list.
@@ -106,7 +106,7 @@ They are included for completeness, but needing these is an indication
 that using a doubly linked list, or Vector, might be a better choice.
 ```julia
 length(l)                 # The number of entries.
-2 in l                    # Test whether the given item is an entry in the list.
+2 in l                    # Test whether the given item is an entry in the list. Returns Bool or missing
 indexin(a, l)             # Highest index in list for each value of a that is member.
 last(l)                   # Last item in the list, the item value.
 push!(l, d)               # Add item d to end of list. Returns index of item.

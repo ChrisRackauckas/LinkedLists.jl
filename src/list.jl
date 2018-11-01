@@ -282,7 +282,7 @@ function prepend!(l::LinkedList, items)
     l
 end
 
-# Adding findfirst, to find the index (node) of the first element of l for which predicate returns true
+#find the index (node) of the first element of l for which predicate returns true
 function findfirst(predicate, l::AbstractList)
     for n in ListIndexIterator
         if predicate(n.data) return n end
