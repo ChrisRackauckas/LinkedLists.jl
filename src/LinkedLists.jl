@@ -1,11 +1,9 @@
-__precompile__()
-
 module LinkedLists
 
-import Base: isempty, empty!, length, last, start, next, done
-import Base: contains, eltype, unshift!, shift!, deleteat!
-import Base: show, println, indexin, endof, push!, pop!, insert!, splice!, eachindex
-import Base: find, append!, prepend!
+import Base: isempty, empty!, length, first, last, iterate, isdone
+import Base: eltype, pushfirst!, popfirst!, deleteat!
+import Base: show, println, indexin, lastindex, push!, pop!, insert!, splice!, keys
+import Base: in , append!, prepend!
 import Base: getindex, setindex!
 
 abstract type AbstractList{T} end
@@ -17,6 +15,6 @@ export LinkedList, ListNode
 
 export AbstractList, AbstractNode
 
-export SLinkedList, SListNode, eachindex
+export SLinkedList, SListNode, indextoposition, positiontoindex
 
 end # module
