@@ -56,6 +56,7 @@ end
 # Returns an iterator over indices.
 # Use getindex, setindex! to find the item at this index.
 keys(l::AbstractList)=ListIndexIterator(l)
+length(l::ListIndexIterator) = length(l.l)
 iterate(liter::ListIndexIterator, n::AbstractNode=liter.l.node.next)= n==liter.l.node ? nothing : (n, n.next)
 
 
@@ -299,7 +300,18 @@ function indextoposition(n::AbstractNode, l::AbstractList)
 end
 indextoposition(a::Vector, l::AbstractList) = map(x -> indextoposition(x,l) , a)
 indextoposition(::Nothing, _) = nothing
-positiontoindex(i::Int, l::AbstractList) = i<= length(l) ? keys(l)[i] : error("list is shorter than $i")
+function positiontoindex(i::Int, l::AbstractList)
+    if i<= length(l)
+        ii = 0
+        for j in keys(l)
+            ii += 1
+            if ii == i
+                return j
+            end
+        end
+    else
+        error("list is shorter than $i")
+    end
+end
 positiontoindex(v::Vector, l::AbstractList) = map(x -> positiontoindex(x, l), v)
 positiontoindex(::Nothing, _) = nothing
-
