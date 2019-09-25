@@ -315,3 +315,6 @@ function positiontoindex(i::Int, l::AbstractList)
 end
 positiontoindex(v::Vector, l::AbstractList) = map(x -> positiontoindex(x, l), v)
 positiontoindex(::Nothing, _) = nothing
+
+# getindex (positiontoindex will error if idx is invalid)
+Base.getindex(lst::AbstractList, idx::Int) = lst[positiontoindex(idx, lst)]
