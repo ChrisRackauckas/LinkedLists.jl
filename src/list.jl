@@ -301,11 +301,11 @@ end
 indextoposition(a::Vector, l::AbstractList) = map(x -> indextoposition(x,l) , a)
 indextoposition(::Nothing, _) = nothing
 function positiontoindex(i::Int, l::AbstractList)
-    if i<= length(l)
+    if i <= length(l)
         ii = 0
         for j in keys(l)
             ii += 1
-            if ii == i
+            if ii === i
                 return j
             end
         end
@@ -315,3 +315,6 @@ function positiontoindex(i::Int, l::AbstractList)
 end
 positiontoindex(v::Vector, l::AbstractList) = map(x -> positiontoindex(x, l), v)
 positiontoindex(::Nothing, _) = nothing
+
+# getindex (positiontoindex will error if idx is invalid)
+Base.getindex(lst::AbstractList, idx::Int) = lst[positiontoindex(idx, lst)]
