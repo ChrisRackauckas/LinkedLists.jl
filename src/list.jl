@@ -123,6 +123,13 @@ end
 
 first(l::AbstractList)=l.node.next.data
 
+"""
+    last(l::AbstractList)
+
+Traverse the list and return the value stored in the last node.
+It is `O(n)` because of the traversal.
+Fallback used for single-linked lists (`SLinkedList`).
+"""
 function last(l::AbstractList)
     lastd=l.node.data
     for d in l
@@ -130,6 +137,13 @@ function last(l::AbstractList)
     end
     lastd
 end
+
+"""
+    last(l::LinkedList)
+
+Returns the value stored in the last node in `O(1)` time.
+Does not make use of `lastindex`.
+"""
 function last(l::LinkedList)
     l.node.prev.data
 end
