@@ -21,7 +21,7 @@ removing other items in the list won't invalidate that index.
 
 Usage:
 ```julia
-a = LinkedList{Int}()    # Create a list of the given type.
+l = LinkedList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 length(l)          # The number of entries. An O(n) operation.
@@ -79,7 +79,7 @@ the items in the list.
 
 Usage:
 ```julia
-a = SLinkedList{Int}()    # Create a list of the given type.
+l = SLinkedList{Int}()    # Create a list of the given type.
 isempty(l)         # Test whether there are any items.
 empty!(l)          # Remove all items.
 eltype(l)          # Returns the item type, here Int.
