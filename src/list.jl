@@ -223,9 +223,9 @@ function insert!(l::AbstractList, n::AbstractNode, d)
     n.next=typeof(n)(n.next, d)
 end
 function insert!(l::LinkedList, n::ListNode, d)
-    toadd=ListNode(n.prev, n, d)
-    n.prev.next=toadd
-    n.prev=toadd
+    toadd=ListNode(n, n.next, d)
+    n.next.prev=toadd
+    n.next=toadd
     toadd
 end
 
